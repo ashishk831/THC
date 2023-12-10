@@ -1,0 +1,1 @@
+{"sale_data": {"rows": 1143, "columns": 11, "file_size": 60522}, "processed_data": {"rows": 1143, "columns": 13, "file_size": 119900}, "X_train": {"rows": 1028, "columns": 10, "file_size": 91454}, "X_test": {"rows": 115, "columns": 10, "file_size": 11098}}
