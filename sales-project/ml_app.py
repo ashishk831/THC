@@ -1,11 +1,38 @@
 import gradio as gr
 import pickle
 import pandas as pd
+import glob
+import os
 
-# Load the trained model
-model_path = ''
-with open(model_path, 'rb') as file:
-    model = pickle.load(file)
+
+def get_latest_folder(directory):
+    folders = [folder for folder in glob.glob(os.path.join(directory, '*')) if os.path.isdir(folder)]
+    if not folders:
+        return None
+    return max(folders, key=os.path.getctime)
+
+def load_pickle_from_latest_folder(directory, pickle_filename):
+    latest_folder = get_latest_folder(directory)
+    if latest_folder is None:
+        print("No folders found in the specified directory.")
+        return None
+
+    pickle_path = os.path.join(latest_folder, pickle_filename)
+
+    if not os.path.exists(pickle_path):
+        print(f"No pickle file '{pickle_filename}' found in the latest folder.")
+        return None
+
+    with open(pickle_path, 'rb') as pickle_file:
+        data = pickle.load(pickle_file)
+        return data
+
+# Example usage
+directory_path = 'path to the 06_models folder'
+pickle_filename = 'model.pkl'
+
+model = load_pickle_from_latest_folder(directory_path, pickle_filename)
+
                         
 
 def predict(ad_id, age, gender, interest, Impressions, Clicks, Spent, Total_Conversion, CTR, CPC):
