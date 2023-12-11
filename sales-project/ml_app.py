@@ -28,12 +28,10 @@ def load_pickle_from_latest_folder(directory, pickle_filename):
         return data
 
 # Example usage
-directory_path = 'path to the 06_models folder'
+directory_path = 'model.pkl'
 pickle_filename = 'model.pkl'
 
 model = load_pickle_from_latest_folder(directory_path, pickle_filename)
-
-                        
 
 def predict(ad_id, age, gender, interest, Impressions, Clicks, Spent, Total_Conversion, CTR, CPC):
     # Convert relevant columns to appropriate types
@@ -69,29 +67,30 @@ def predict(ad_id, age, gender, interest, Impressions, Clicks, Spent, Total_Conv
     prediction = model.predict(input_df)
 
     # Return the predicted value for Approved_Conversion
-    return prediction[0]
+    return round(prediction[0])
 
-# Define the input components for Gradio
+# Define the input components for Gradio with labels and info
 inputs = [
-    gr.Number(label='ad_id'),
-    gr.Number(label='age'),
-    gr.Number(label='gender'),
-    gr.Number(label='interest'),
-    gr.Number(label='Impressions'),
-    gr.Number(label='Clicks'),
-    gr.Number(label='Spent'),
-    gr.Number(label='Total_Conversion'),
-    gr.Number(label='CTR'),
-    gr.Number(label='CPC')
+    gr.Number(label='Ad ID', info='Enter the advertisement ID'),
+    gr.Number(label='Age', info='Enter the target age group'),
+    gr.Number(label='Gender', info='Enter the gender (0 for female, 1 for male)'),
+    gr.Dropdown(label='Interest', choices=[2, 7, 10, 15, 16, 18, 19, 20, 21, 22, 23, 24, 25, 
+                    26, 27, 28, 29, 30, 31, 32, 36, 63, 64, 65, 66, 100, 101, 102, 
+                    103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114], 
+                    info='Select the target audience interest'),
+    gr.Number(label='Impressions', info='Enter the number of impressions'),
+    gr.Number(label='Clicks', info='Enter the number of clicks'),
+    gr.Number(label='Spent', info='Enter the amount spent on the ad'),
+    gr.Number(label='Total Conversion', info='Enter the total conversion count'),
+    gr.Number(label='CTR', info='Enter the Click-Through Rate'),
+    gr.Number(label='CPC', info='Enter the Cost Per Click')
 ]
 
-# Create Gradio interface
+# Create Gradio interface with improved styling
 iface = gr.Interface(
     fn=predict,
     inputs=inputs,
-    outputs=gr.Textbox(type='text', label='Predicted Approved_Conversion')
+    outputs=gr.Textbox(type='text', label='Predicted Approved_Conversion', placeholder='Prediction will appear here')
 )
 
-# Launch the interface
 iface.launch()
-
