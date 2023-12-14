@@ -46,6 +46,9 @@ def predict(ad_id, age, gender, interest, Impressions, Clicks, Spent, Total_Conv
     CTR = float(CTR)
     CPC = float(CPC)
 
+    if ad_id < 0 or age < 0 or gender < 0 or interest < 0 or Impressions < 0 or Clicks < 0 or Spent < 0 or Total_Conversion < 0 or CTR < 0 or CPC < 0:
+       return "Please enter only positive values for all inputs."
+    
     # Create a dictionary with input values
     input_data = {
         'ad_id': [ad_id],
